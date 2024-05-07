@@ -1,0 +1,17 @@
+{
+  "name": "anari",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node ."
+  },
+  "author": "Pyromagne",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^2.3.0",
+    "discord-api-types": "^0.37.83",
+    "discord.js": "^14.15.2",
+    "dotenv": "^16.4.5"
+  }
+}
