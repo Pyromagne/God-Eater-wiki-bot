@@ -9,6 +9,7 @@ const client =  new Client({
 });
 
 client.commands = new Collection();
+client.buttons = new Collection();
 client.commandArray = [];
 
 const functionFolders = fs.readdirSync(`./src/functions`);
@@ -24,4 +25,5 @@ for (const folder of functionFolders) {
 
 client.handleEvents();
 client.handleCommands();
+client.handleComponents();
 client.login(token);
