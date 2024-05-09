@@ -1,6 +1,6 @@
 module.exports = {
-    data:{
-        name: 'test'
+    data: {
+        name: 'testButton'
     },
 
     async execute(interaction, client) {
@@ -8,4 +8,4 @@ module.exports = {
             content: `Button Example`
         });
     }
- }
+}

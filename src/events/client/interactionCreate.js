@@ -46,5 +46,19 @@ module.exports = {
                 console.log(error);
             }
         }
+
+        else if (interaction.isStringSelectMenu()) {
+            const { selectMenus } = client;
+            const { customId } = interaction;
+            const menu = selectMenus.get(customId);
+
+            if (!menu) return new Error('there is no code for this menu.');
+
+            try {
+                await menu.execute(interaction, client)
+            } catch (error) {
+                console.log(error);
+            }
+        }
     }
 }
