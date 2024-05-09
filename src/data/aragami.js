@@ -1,4 +1,4 @@
-const aragamiSmall = [
+const aragami = [
     {
         value: 'Ogretail',
         name: 'Ogretail',
@@ -146,7 +146,7 @@ const aragamiSmall = [
     
 ]
 
-module.exports = aragamiSmall;
+module.exports = aragami;
 
 /* {
     value: '',
