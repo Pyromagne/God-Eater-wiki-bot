@@ -1,9 +1,10 @@
 const { EmbedBuilder } = require('discord.js');
 
-const reply = ( interaction, client, profile ) => {
+const reply = ( interaction, client, profile, user ) => {
+
     return embed = new EmbedBuilder()
     .setTitle(interaction.user.tag)
-    .setThumbnail(interaction.user.displayAvatarURL())
+    .setThumbnail(user.displayAvatarURL())
     .setColor(0x9c1000)
     .setTimestamp(Date.now())
     .setFooter({

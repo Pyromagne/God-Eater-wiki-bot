@@ -15,6 +15,7 @@ module.exports = {
                         .setName('user')
                         .setDescription('mention a member')
                         .setRequired(true)
+                    // TODO: make this optional and make default value is self
                 ),
         )
         .addSubcommand((subcommand) =>
@@ -84,7 +85,7 @@ module.exports = {
                 })
             }
 
-            const embed = reply(interaction, client, profile);
+            const embed = reply(interaction, client, profile, user);
             await interaction.reply({
                 embeds: [embed]
             })
@@ -92,26 +93,36 @@ module.exports = {
 
         if (interaction.options.getSubcommand() === 'create') {
             const user = interaction.user;
-
-            let profile = await Profile.findOne({ _userId: user.id });
-
-            profile = await new Profile({
-                _tag: user.tag,
-                _userId: user.id,
-                name: interaction.options.get('name').value,
-                codename: interaction.options.get('codename').value,
-                melee: interaction.options.get('melee').value,
-                gun: interaction.options.get('gun').value,
-                shield: interaction.options.get('shield').value,
-            });
-
-            await profile.save().catch(console.error);
-
-            const embed = reply(interaction, client, profile);
-
-            await interaction.reply({
-                embeds: [embed]
-            })
+        
+            try {
+                let profile = await Profile.findOne({ _userId: user.id });
+        
+                if (!profile) {
+                    profile = new Profile({
+                        _tag: user.tag,
+                        _userId: user.id,
+                        name: interaction.options.get('name').value,
+                        codename: interaction.options.get('codename').value,
+                        melee: interaction.options.get('melee').value,
+                        gun: interaction.options.get('gun').value,
+                        shield: interaction.options.get('shield').value,
+                    });
+        
+                    await profile.save();
+                } else {
+                    profile.name = interaction.options.get('name').value;
+                    profile.codename = interaction.options.get('codename').value;
+                    profile.melee = interaction.options.get('melee').value;
+                    profile.gun = interaction.options.get('gun').value;
+                    profile.shield = interaction.options.get('shield').value;
+                    await profile.save();
+                }
+        
+                const embed = reply(interaction, client, profile, user);
+                await interaction.reply({ embeds: [embed] });
+            } catch (error) {
+                console.error(error);
+            }
         }
 
     }
