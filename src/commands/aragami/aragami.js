@@ -1,6 +1,8 @@
-const { SlashCommandBuilder } = require('discord.js');
 const aragami = require('../../data/aragami');
 const reply = require('../../embeds/aragami-reply');
+
+const { SlashCommandBuilder } = require('discord.js');
+const chalk = require('chalk');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -25,18 +27,15 @@ module.exports = {
     },
 
     async execute(interaction, client) {
-        console.log(interaction.options.get('aragami').value);
-        let embed = null;
-        
-        aragami.map((aragami, index) => {
-            if (interaction.options.get('aragami').value === aragami.value) {
-                embed = reply(interaction, aragami);
-            }
-        })
-
-        await interaction.reply({
-            embeds: [embed]
-        })
-
+        const requestedAragami = interaction.options.getString('aragami');
+        const foundAragami = aragami.find(aragami => aragami.value === requestedAragami);
+    
+        if (foundAragami) {
+            const embed = reply(interaction, foundAragami);
+            await interaction.reply({ embeds: [embed] });
+        } else {
+            console.error(chalk.red('[ERROR]: Aragami not found'));
+            await interaction.reply({ content: "Aragami not found.", ephemeral: true });
+        }
     }
 }

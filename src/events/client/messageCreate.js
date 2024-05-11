@@ -1,3 +1,5 @@
+const chalk = require('chalk');
+
 const goodMorningMessages = ['gm', 'goodmorning', 'good morning'];
 const goodNightMessages = ['gn', 'goodnight', 'good night'];
 
@@ -23,6 +25,5 @@ module.exports = {
                 console.error('Error sending message:', error);
             }
         }
-
     }
 }

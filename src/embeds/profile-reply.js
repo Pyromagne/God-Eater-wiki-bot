@@ -2,11 +2,15 @@ const { EmbedBuilder } = require('discord.js');
 
 const reply = ( interaction, client, profile, user ) => {
 
+    if (profile.bio === null) profile.bio = '\u200B';
+
     return embed = new EmbedBuilder()
     .setTitle(interaction.user.tag)
     .setThumbnail(user.displayAvatarURL())
     .setColor(0x9c1000)
     .setTimestamp(Date.now())
+    .setDescription(`${profile.bio}`)
+    .setImage(profile.imageURL ? profile.imageURL : null) 
     .setFooter({
         iconURL: client.user.displayAvatarURL(),
         text: client.user.tag
@@ -14,27 +18,32 @@ const reply = ( interaction, client, profile, user ) => {
     .addFields([
         {
             name: 'Codename',
-            value: `${profile.codename}`,
-            inline: false
+            value: `\`${profile.codename}\``,
+            inline: true
         },
         {
             name: 'Name',
-            value: `${profile.name}`,
-            inline: false
+            value: `\`${profile.name}\``,
+            inline: true
+        },
+        {
+            name: '\u200B',
+            value: '\u200B',
+            inline: false 
         },
         {
             name: 'Melee',
-            value: `${profile.melee}`,
+            value: `\`${profile.melee}\``,
             inline: true
         },
         {
             name: 'Gun',
-            value: `${profile.gun}`,
+            value: `\`${profile.gun}\``,
             inline: true
         },
         {
             name: 'Shield',
-            value: `${profile.shield}`,
+            value: `\`${profile.shield}\``,
             inline: true
         }
     ]);

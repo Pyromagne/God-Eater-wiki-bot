@@ -70,6 +70,18 @@ module.exports = {
                             { name: 'Tower', value: 'Tower' }
                         )
                         .setRequired(true)
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName('avatar')
+                        .setDescription('Image url of your avatar')
+                        .setRequired(false)
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName('bio')
+                        .setDescription('About your self')
+                        .setRequired(false)
                 ),
         ),
 
@@ -93,36 +105,45 @@ module.exports = {
 
         if (interaction.options.getSubcommand() === 'create') {
             const user = interaction.user;
-        
-            try {
-                let profile = await Profile.findOne({ _userId: user.id });
-        
-                if (!profile) {
-                    profile = new Profile({
-                        _tag: user.tag,
-                        _userId: user.id,
-                        name: interaction.options.get('name').value,
-                        codename: interaction.options.get('codename').value,
-                        melee: interaction.options.get('melee').value,
-                        gun: interaction.options.get('gun').value,
-                        shield: interaction.options.get('shield').value,
-                    });
-        
-                    await profile.save();
-                } else {
-                    profile.name = interaction.options.get('name').value;
-                    profile.codename = interaction.options.get('codename').value;
-                    profile.melee = interaction.options.get('melee').value;
-                    profile.gun = interaction.options.get('gun').value;
-                    profile.shield = interaction.options.get('shield').value;
-                    await profile.save();
+
+            let profile = await Profile.findOne({ _userId: user.id });
+
+            if (!profile) {
+                profile = new Profile({
+                    _tag: user.tag,
+                    _userId: user.id,
+                    name: interaction.options.get('name').value,
+                    codename: interaction.options.get('codename').value,
+                    bio: interaction.options.get('bio') === null ? null : interaction.options.get('bio').value,
+                    melee: interaction.options.get('melee').value,
+                    gun: interaction.options.get('gun').value,
+                    shield: interaction.options.get('shield').value,
+                    imageURL: interaction.options.get('avatar') === null ? null : interaction.options.get('avatar').value,
+                });
+
+                await profile.save();
+            } else {
+                //TODO: REMOVE EDIT AND MAKE ANOTHER COMMAND FOR EDITING PROFILE
+
+                profile.name = interaction.options.get('name').value;
+                profile.codename = interaction.options.get('codename').value;
+                profile.melee = interaction.options.get('melee').value;
+                profile.gun = interaction.options.get('gun').value;
+                profile.shield = interaction.options.get('shield').value;
+
+                if (interaction.options.get('bio') !== null) {
+                    profile.bio = interaction.options.get('bio').value;
                 }
-        
-                const embed = reply(interaction, client, profile, user);
-                await interaction.reply({ embeds: [embed] });
-            } catch (error) {
-                console.error(error);
+
+                if (interaction.options.get('avatar') !== null) {
+                    profile.imageURL = interaction.options.get('avatar').value;
+                }
+
+                await profile.save();
             }
+
+            const embed = reply(interaction, client, profile, user);
+            await interaction.reply({ embeds: [embed] });
         }
 
     }

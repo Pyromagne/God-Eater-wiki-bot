@@ -4,9 +4,11 @@ const profileSchema = new Schema({
     _userId: String,
     name: String,
     codename: String,
+    bio: String,
     melee: String,
     gun: String,
     shield: String,
+    imageURL: String,
 })
 
 module.exports =  new model('profile', profileSchema, 'profiles');
