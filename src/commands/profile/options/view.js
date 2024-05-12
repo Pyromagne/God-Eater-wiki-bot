@@ -2,9 +2,15 @@ const Profile = require('../../../schemas/profile');
 const reply = require('../../../embeds/profile-reply');
 
 const view = async (interaction, client) => {
-    const user = interaction.options.getUser('user');
+    let user = interaction.options.getUser('user');
 
-    let profile = await Profile.findOne({ _userId: user.id });
+    let profile;
+    if (!user) {
+        profile = await Profile.findOne({ _userId: interaction.user.id });
+        user = interaction.user;
+    } else {
+        profile = await Profile.findOne({ _userId: user.id });
+    }
 
     if (!profile) {
         return await interaction.reply({

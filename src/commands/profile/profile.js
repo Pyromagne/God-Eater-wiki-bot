@@ -16,8 +16,7 @@ module.exports = {
                     option
                         .setName('user')
                         .setDescription('mention a member')
-                        .setRequired(true)
-                    // TODO: make this optional and make default value is self
+                        .setRequired(false)
                 ),
         )
         .addSubcommand((subcommand) =>
