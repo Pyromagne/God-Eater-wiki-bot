@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 
-const reply = (interaction, aragami) => {
+const reply = (client, aragami) => {
     const embed = new EmbedBuilder()
         .setTitle(`Aragami: ${aragami.name} (${aragami.type})`)
         .setColor(0x9c1000)
@@ -8,8 +8,8 @@ const reply = (interaction, aragami) => {
         .setThumbnail('https://static.wikia.nocookie.net/godeater/images/9/96/Vajra-banner.jpg')
         .setDescription(`${aragami.description}`)
         .setFooter({
-            iconURL: interaction.user.displayAvatarURL(),
-            text: interaction.user.tag
+            iconURL: client.user.displayAvatarURL(),
+            text: client.user.tag
         })
         .setImage(`${aragami.imageURL}`)
         .addFields([

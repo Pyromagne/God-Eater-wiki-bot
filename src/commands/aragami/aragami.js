@@ -31,7 +31,7 @@ module.exports = {
         const foundAragami = aragami.find(aragami => aragami.value === requestedAragami);
     
         if (foundAragami) {
-            const embed = reply(interaction, foundAragami);
+            const embed = reply(client, foundAragami);
             await interaction.reply({ embeds: [embed] });
         } else {
             console.error(chalk.red('[ERROR]: Aragami not found'));
