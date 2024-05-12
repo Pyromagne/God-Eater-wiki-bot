@@ -1,6 +1,8 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const Profile = require('../../schemas/profile');
-const reply = require('../../embeds/profile-reply');
+const view = require('./options/view');
+const create = require('./options/create');
+const edit = require('./options/edit');
+
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -153,113 +155,15 @@ module.exports = {
 
     async execute(interaction, client) {
         if (interaction.options.getSubcommand() === 'view') {
-            const user = interaction.options.getUser('user');
-
-            let profile = await Profile.findOne({ _userId: user.id });
-
-            if (!profile) {
-                return await interaction.reply({
-                    content: `No profile found`,
-                    ephemeral: true
-                })
-            }
-
-            const embed = reply(interaction, client, profile, user);
-            await interaction.reply({
-                embeds: [embed]
-            })
+            view(interaction, client);
         }
 
         if (interaction.options.getSubcommand() === 'create') {
-            const user = interaction.user;
-
-            let profile = await Profile.findOne({ _userId: user.id });
-
-            if (!profile) {
-                profile = new Profile({
-                    _tag: user.tag,
-                    _userId: user.id,
-                    name: interaction.options.get('name').value,
-                    codename: interaction.options.get('codename').value,
-                    bio: interaction.options.get('bio') === null ? null : interaction.options.get('bio').value,
-                    melee: interaction.options.get('melee').value,
-                    gun: interaction.options.get('gun').value,
-                    shield: interaction.options.get('shield').value,
-                    imageURL: interaction.options.get('avatar') === null ? null : interaction.options.get('avatar').value,
-                });
-
-                await profile.save();
-            } else {
-                //TODO: REMOVE EDIT AND MAKE ANOTHER COMMAND FOR EDITING PROFILE
-                //DONE
-
-                profile.name = interaction.options.get('name').value;
-                profile.codename = interaction.options.get('codename').value;
-                profile.melee = interaction.options.get('melee').value;
-                profile.gun = interaction.options.get('gun').value;
-                profile.shield = interaction.options.get('shield').value;
-
-                if (interaction.options.get('bio') !== null) {
-                    profile.bio = interaction.options.get('bio').value;
-                }
-
-                if (interaction.options.get('avatar') !== null) {
-                    profile.imageURL = interaction.options.get('avatar').value;
-                }
-
-                await profile.save();
-            }
-
-            const embed = reply(interaction, client, profile, user);
-            await interaction.reply({ embeds: [embed] });
+            create(interaction, client);
         }
 
         if (interaction.options.getSubcommand() === 'edit') {
-            const user = interaction.user;
-
-            let profile = await Profile.findOne({ _userId: user.id });
-
-            if (!profile) {
-
-                await interaction.reply({
-                    content: 'You do not have a God Eater profile yet',
-                    ephemeral: true
-                });
-
-            } else {
-                //TODO: REMOVE EDIT AND MAKE ANOTHER COMMAND FOR EDITING PROFILE
-
-                if (interaction.options.get('name') !== null) {
-                    profile.name = interaction.options.get('name').value;
-                }
-                if (interaction.options.get('codename') !== null) {
-                    profile.codename = interaction.options.get('codename').value;
-                }
-                if (interaction.options.get('melee') !== null) {
-                    profile.melee = interaction.options.get('melee').value;
-                }
-                if (interaction.options.get('gun') !== null) {
-                    profile.gun = interaction.options.get('gun').value;
-                }
-                if (interaction.options.get('shield') !== null) {
-                    profile.shield = interaction.options.get('shield').value;
-                }
-                if (interaction.options.get('bio') !== null) {
-                    profile.bio = interaction.options.get('bio').value;
-                }
-                if (interaction.options.get('avatar') !== null) {
-                    profile.imageURL = interaction.options.get('avatar').value;
-                }
-
-                await profile.save();
-            }
-
-            const embed = reply(interaction, client, profile, user);
-            await interaction.reply({
-                content: `Changes saved successfully!`,
-                ephemeral: true,
-                embeds: [embed]
-            });
+            edit(interaction, client);
         }
     }
 }
