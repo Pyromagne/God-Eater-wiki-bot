@@ -21,17 +21,17 @@ module.exports = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName('create')
-                .setDescription(`Create or edit your god Eater profile`)
+                .setDescription(`Create your own god Eater's profile`)
                 .addStringOption((option) =>
                     option
                         .setName('name')
-                        .setDescription('what us your god Eater name')
+                        .setDescription('what is your god Eater name')
                         .setRequired(true)
                 )
                 .addStringOption((option) =>
                     option
                         .setName('codename')
-                        .setDescription('what us your god Eater code name')
+                        .setDescription('what is your god Eater code name')
                         .setRequired(true)
                 )
                 .addStringOption((option) =>
@@ -83,6 +83,72 @@ module.exports = {
                         .setDescription('About your self')
                         .setRequired(false)
                 ),
+        )
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName('edit')
+                .setDescription(`Edit your god Eater's profile`)
+                .addStringOption((option) =>
+                    option
+                        .setName('name')
+                        .setDescription('edit your god eater name')
+                        .setRequired(false)
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName('codename')
+                        .setDescription('edit your god eater codename')
+                        .setRequired(false)
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName('melee')
+                        .setDescription('edit the type of your melee weapon')
+                        .setChoices(
+                            { name: 'Short Blade', value: 'Short Blade' },
+                            { name: 'Long Blade', value: 'Long Blade' },
+                            { name: 'Buster Blade', value: 'Buster Blade' },
+                            { name: 'Boost Hammer', value: 'Boost Hammer' },
+                            { name: 'Charge Spear', value: 'Charge Spear' },
+                            { name: 'Variant Scythe', value: 'Variant Scythe' }
+                        )
+                        .setRequired(false)
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName('gun')
+                        .setDescription('edit the type of your gun')
+                        .setChoices(
+                            { name: 'Sniper', value: 'Sniper' },
+                            { name: 'Assault', value: 'Assault' },
+                            { name: 'Blast', value: 'Blast' },
+                            { name: 'Shotgun', value: 'Shotgun' }
+                        )
+                        .setRequired(false)
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName('shield')
+                        .setDescription('edit the type of your shield')
+                        .setChoices(
+                            { name: 'Buckler', value: 'Buckler' },
+                            { name: 'Shield', value: 'Shield' },
+                            { name: 'Tower', value: 'Tower' }
+                        )
+                        .setRequired(false)
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName('avatar')
+                        .setDescription('change your image in your profile')
+                        .setRequired(false)
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName('bio')
+                        .setDescription('Change info about your self')
+                        .setRequired(false)
+                ),
         ),
 
     async execute(interaction, client) {
@@ -93,7 +159,8 @@ module.exports = {
 
             if (!profile) {
                 return await interaction.reply({
-                    content: `No profile found`
+                    content: `No profile found`,
+                    ephemeral: true
                 })
             }
 
@@ -124,6 +191,7 @@ module.exports = {
                 await profile.save();
             } else {
                 //TODO: REMOVE EDIT AND MAKE ANOTHER COMMAND FOR EDITING PROFILE
+                //DONE
 
                 profile.name = interaction.options.get('name').value;
                 profile.codename = interaction.options.get('codename').value;
@@ -146,5 +214,52 @@ module.exports = {
             await interaction.reply({ embeds: [embed] });
         }
 
+        if (interaction.options.getSubcommand() === 'edit') {
+            const user = interaction.user;
+
+            let profile = await Profile.findOne({ _userId: user.id });
+
+            if (!profile) {
+
+                await interaction.reply({
+                    content: 'You do not have a God Eater profile yet',
+                    ephemeral: true
+                });
+
+            } else {
+                //TODO: REMOVE EDIT AND MAKE ANOTHER COMMAND FOR EDITING PROFILE
+
+                if (interaction.options.get('name') !== null) {
+                    profile.name = interaction.options.get('name').value;
+                }
+                if (interaction.options.get('codename') !== null) {
+                    profile.codename = interaction.options.get('codename').value;
+                }
+                if (interaction.options.get('melee') !== null) {
+                    profile.melee = interaction.options.get('melee').value;
+                }
+                if (interaction.options.get('gun') !== null) {
+                    profile.gun = interaction.options.get('gun').value;
+                }
+                if (interaction.options.get('shield') !== null) {
+                    profile.shield = interaction.options.get('shield').value;
+                }
+                if (interaction.options.get('bio') !== null) {
+                    profile.bio = interaction.options.get('bio').value;
+                }
+                if (interaction.options.get('avatar') !== null) {
+                    profile.imageURL = interaction.options.get('avatar').value;
+                }
+
+                await profile.save();
+            }
+
+            const embed = reply(interaction, client, profile, user);
+            await interaction.reply({
+                content: `Changes saved successfully!`,
+                ephemeral: true,
+                embeds: [embed]
+            });
+        }
     }
 }
