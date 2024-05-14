@@ -22,23 +22,23 @@ module.exports = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName('create')
-                .setDescription(`Create your own god Eater's profile`)
+                .setDescription(`create your own god Eater's profile`)
                 .addStringOption((option) =>
                     option
                         .setName('name')
-                        .setDescription('what is your god Eater name')
+                        .setDescription(`enter your god eater name`)
                         .setRequired(true)
                 )
                 .addStringOption((option) =>
                     option
                         .setName('codename')
-                        .setDescription('what is your god Eater code name')
+                        .setDescription(`enter your god eater codename`)
                         .setRequired(true)
                 )
                 .addStringOption((option) =>
                     option
                         .setName('melee')
-                        .setDescription('choose what melee type is your favorite')
+                        .setDescription(`choose your melee weapon`)
                         .setChoices(
                             { name: 'Short Blade', value: 'Short Blade' },
                             { name: 'Long Blade', value: 'Long Blade' },
@@ -52,7 +52,7 @@ module.exports = {
                 .addStringOption((option) =>
                     option
                         .setName('gun')
-                        .setDescription('choose what gun type is your favorite')
+                        .setDescription(`choose your gun type`)
                         .setChoices(
                             { name: 'Sniper', value: 'Sniper' },
                             { name: 'Assault', value: 'Assault' },
@@ -64,7 +64,7 @@ module.exports = {
                 .addStringOption((option) =>
                     option
                         .setName('shield')
-                        .setDescription('choose what shield type is your favorite')
+                        .setDescription(`choose your shield type`)
                         .setChoices(
                             { name: 'Buckler', value: 'Buckler' },
                             { name: 'Shield', value: 'Shield' },
@@ -75,36 +75,36 @@ module.exports = {
                 .addStringOption((option) =>
                     option
                         .setName('avatar')
-                        .setDescription('Image url of your avatar')
+                        .setDescription('provide the URL of an image to use as your avatar')
                         .setRequired(false)
                 )
                 .addStringOption((option) =>
                     option
                         .setName('bio')
-                        .setDescription('About your self')
+                        .setDescription('write a short bio about yourself')
                         .setRequired(false)
                 ),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName('edit')
-                .setDescription(`Edit your god Eater's profile`)
+                .setDescription(`edit your god eater's profile`)
                 .addStringOption((option) =>
                     option
                         .setName('name')
-                        .setDescription('edit your god eater name')
+                        .setDescription(`update your profile's name`)
                         .setRequired(false)
                 )
                 .addStringOption((option) =>
                     option
                         .setName('codename')
-                        .setDescription('edit your god eater codename')
+                        .setDescription(`update your profile's codename`)
                         .setRequired(false)
                 )
                 .addStringOption((option) =>
                     option
                         .setName('melee')
-                        .setDescription('edit the type of your melee weapon')
+                        .setDescription(`update your melee weapon choice`)
                         .setChoices(
                             { name: 'Short Blade', value: 'Short Blade' },
                             { name: 'Long Blade', value: 'Long Blade' },
@@ -118,7 +118,7 @@ module.exports = {
                 .addStringOption((option) =>
                     option
                         .setName('gun')
-                        .setDescription('edit the type of your gun')
+                        .setDescription(`update your gun type choice`)
                         .setChoices(
                             { name: 'Sniper', value: 'Sniper' },
                             { name: 'Assault', value: 'Assault' },
@@ -130,7 +130,7 @@ module.exports = {
                 .addStringOption((option) =>
                     option
                         .setName('shield')
-                        .setDescription('edit the type of your shield')
+                        .setDescription(`update your profile's shield type`)
                         .setChoices(
                             { name: 'Buckler', value: 'Buckler' },
                             { name: 'Shield', value: 'Shield' },
@@ -141,13 +141,13 @@ module.exports = {
                 .addStringOption((option) =>
                     option
                         .setName('avatar')
-                        .setDescription('change your image in your profile')
+                        .setDescription(`update your avatar image URL`)
                         .setRequired(false)
                 )
                 .addStringOption((option) =>
                     option
                         .setName('bio')
-                        .setDescription('Change info about your self')
+                        .setDescription(`update your profile description`)
                         .setRequired(false)
                 ),
         ),

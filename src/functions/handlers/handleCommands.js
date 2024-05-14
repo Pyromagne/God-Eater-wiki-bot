@@ -1,6 +1,7 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
 const fs = require('fs');
+const chalk = require('chalk');
 
 module.exports = (client) => {
     client.handleCommands = async () => {
@@ -15,7 +16,7 @@ module.exports = (client) => {
                 const command = require(`../../commands/${folder}/${file}`);
                 commands.set(command.data.name, command);
                 commandArray.push(command.data.toJSON());
-                console.log(`Command: ${command.data.name} has been registered`);
+                console.log(chalk.green(`[Bot]: ${command.data.name} command has been registered`));
             }
         }
 
@@ -34,11 +35,11 @@ module.exports = (client) => {
         } */
 
         try {
-            console.log('Started refreshing application (/) commands.');
+            console.log(chalk.green(`[Bot]: Started refreshing application (/) commands.`));
 
             await rest.put(Routes.applicationCommands(clientId), { body: client.commandArray });
 
-            console.log('Successfully reloaded application (/) commands.');
+            console.log(chalk.green(`[Bot]: Successfully reloaded application (/) commands.`));
         } catch (error) {
             console.error(error);
         }
