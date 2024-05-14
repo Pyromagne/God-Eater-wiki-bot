@@ -5,13 +5,11 @@ const reply = (client, aragami) => {
         .setTitle(`Aragami: ${aragami.name} (${aragami.type})`)
         .setColor(0x9c1000)
         .setTimestamp(Date.now())
-        .setThumbnail('https://static.wikia.nocookie.net/godeater/images/9/96/Vajra-banner.jpg')
-        .setDescription(`${aragami.description}`)
         .setFooter({
             iconURL: client.user.displayAvatarURL(),
             text: client.user.tag
         })
-        .setImage(`${aragami.imageURL}`)
+        .setImage(`${aragami.imageURL + '/revision/latest/scale-to-width-down/350'}`)
         .addFields([
             {
                 name: 'Attribute',
@@ -43,4 +41,18 @@ const reply = (client, aragami) => {
     return embed;
 }
 
-module.exports = reply;
+const desc = (client, aragami) => {
+    const embed = new EmbedBuilder()
+        .setTitle(`Aragami: ${aragami.name} (${aragami.type})`)
+        .setColor(0x9c1000)
+        .setTimestamp(Date.now())
+        .setDescription(`${aragami.description}`)
+        .setFooter({
+            iconURL: client.user.displayAvatarURL(),
+            text: client.user.tag
+        })
+    
+    return embed;
+}
+
+module.exports = { reply, desc };
