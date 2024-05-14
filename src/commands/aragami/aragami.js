@@ -17,26 +17,21 @@ module.exports = {
                 .setRequired(true)
         ),
     async autocomplete(interaction) {
-        const focusedValue = interaction.options.getFocused();
+        const focusedValue = interaction.options.getFocused().toLowerCase();
         const choices = aragami.map(aragami => aragami.name);
-        const filtered = choices.filter(choice => choice.includes(focusedValue));
+        const filtered = choices.filter(choice => choice.toLowerCase().includes(focusedValue));
 
-        let options;
-        if (filtered.length > 25) {
-            options = filtered.slice(0, 25);
-        } else {
-            options = filtered;
-        }
+        const options = filtered.slice(0, 25);
 
         await interaction.respond(
-            options.map(choice => ({ name: choice, value: choice })),
+            options.map(choice => ({ name: choice, value: choice }))
         );
     },
 
     async execute(interaction, client) {
         const requestedAragami = interaction.options.getString('aragami');
         const foundAragami = aragami.find(aragami => aragami.value === requestedAragami);
-    
+
         if (foundAragami) {
             const embed = reply(client, foundAragami);
             await interaction.reply({ embeds: [embed] });
