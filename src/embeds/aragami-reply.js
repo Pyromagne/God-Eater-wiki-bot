@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 
 const reply = (client, aragami) => {
     const embed = new EmbedBuilder()
-        .setTitle(`Aragami: ${aragami.name} (${aragami.type})`)
+        .setTitle(`Aragami: ${aragami.name} (${aragami.type.join('/')})`)
         .setColor(0x9c1000)
         .setTimestamp(Date.now())
         .setFooter({
@@ -49,7 +49,7 @@ const desc = (client, aragami) => {
         .setDescription(`${aragami.description}`)
         .setFooter({
             iconURL: client.user.displayAvatarURL(),
-            text: client.user.tag
+            text: `To hide this, use the /preference command`
         })
     
     return embed;

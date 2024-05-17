@@ -3,7 +3,6 @@ const Preference = require('../../../schemas/preference');
 const description = async (interaction, client) => {
     const user = interaction.user;
     const choice = interaction.options.get('show').value.toLowerCase();
-    console.log(choice);
     let userPrefence = await Preference.findOne({ _userId: user.id });
 
     if (!userPrefence) {
