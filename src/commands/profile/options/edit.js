@@ -14,7 +14,6 @@ const edit = async (interaction, client) => {
         });
 
     } else {
-
         if (interaction.options.get('name') !== null) {
             profile.name = interaction.options.get('name').value;
         }
@@ -38,14 +37,13 @@ const edit = async (interaction, client) => {
         }
 
         await profile.save();
+        const embed = reply(interaction, client, profile, user);
+        await interaction.reply({
+            content: `Changes saved successfully!`,
+            ephemeral: true,
+            embeds: [embed]
+        });
     }
-
-    const embed = reply(interaction, client, profile, user);
-    await interaction.reply({
-        content: `Changes saved successfully!`,
-        ephemeral: true,
-        embeds: [embed]
-    });
 }
 
 module.exports = edit;
