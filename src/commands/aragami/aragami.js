@@ -15,6 +15,15 @@ module.exports = {
                 .setDescription('select the Aragami you want to learn about')
                 .setAutocomplete(true)
                 .setRequired(true)
+        )
+        .addStringOption((option) =>
+            option
+                .setName('descriptiononly')
+                .setDescription('show only aragami description')
+                .setChoices(
+                    { name: 'Yes', value: 'yes' },
+                    { name: 'No', value: 'no' }
+                )
         ),
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused().toLowerCase();
@@ -31,7 +40,23 @@ module.exports = {
     async execute(interaction, client) {
         const user = interaction.user;
         const requestedAragami = interaction.options.getString('aragami');
+
+        const descOnly = interaction.options.getString('descriptiononly');
         const foundAragami = aragami.find(aragami => aragami.value === requestedAragami);
+
+        if (descOnly === 'yes') {
+            if (foundAragami) {
+                const embedDesc = desc(client, foundAragami);
+                
+                await interaction.reply({ embeds: [embedDesc] });
+            } else {
+                console.error(chalk.red('[ERROR]: Aragami not found'));
+                await interaction.reply({ content: "Sorry, I couldn't find the Aragami you were looking for.", ephemeral: true });
+            }
+
+            return;
+        }
+
         let showDescription;
         let userPrefence = await Preference.findOne({ _userId: user.id });
 
